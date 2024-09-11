@@ -8,7 +8,7 @@ const Home = () => {
   if(loading) return <div>Loading ...Please wait</div>
   
   return (
-    <div className="py-8 container mx-auto flex flex-wrap justfy-center gap-10">
+    <div className="py-8 container mx-auto flex flex-wrap justfy-center">
       {recipeList && recipeList.length > 0
         ? recipeList.map(item => <RecipeItem item={item} />)
         : <div>
