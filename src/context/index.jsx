@@ -6,7 +6,8 @@ export default function GlobalState({ children }) {
   const [searchParam, setSearchParam] = useState("");
   const [loading, setLoading] = useState(false);
   const [recipeList, setRecipeList] = useState([]);
-
+  const [recipeDetailsData, setRecipeDetailsData] = useState(null);
+  const [favoriteList, setFavoriteList] = useState([]);
   async function handleSubmit(e) {
     e.preventDefault();
 
@@ -16,7 +17,7 @@ export default function GlobalState({ children }) {
       );
 
       const data = await res.json();
-      if(data?.data?.recipes){
+      if (data?.data?.recipes) {
         setRecipeList(data?.data?.recipes);
         setLoading(false);
         setSearchParam("");
@@ -24,14 +25,40 @@ export default function GlobalState({ children }) {
     } catch (e) {
       console.log(e);
       setLoading(false);
-      setSearchParam('')
+      setSearchParam("");
     }
-    
-    
   }
+
+  // add fax
+  function handleAddFavorite(getCuurrentItem) {
+    console.log(getCuurrentItem);
+    let copyFavoriteList = [...favoriteList];
+    const index = copyFavoriteList.findIndex(
+      (item) => item.id === getCuurrentItem.id
+    );
+    if (index === -1) {
+      copyFavoriteList.push(getCuurrentItem);
+    } else {
+      copyFavoriteList.splice(index);
+    }
+    setFavoriteList(copyFavoriteList);
+  }
+console.log(favoriteList, 'favoriteList');
+
+
   return (
     <GlobalContext.Provider
-      value={{ searchParam, setSearchParam, handleSubmit, loading, recipeList}}
+      value={{
+        searchParam,
+        setSearchParam,
+        handleSubmit,
+        loading,
+        recipeList,
+        recipeDetailsData,
+        setRecipeDetailsData,
+        handleAddFavorite,
+        favoriteList
+      }}
     >
       {children}
     </GlobalContext.Provider>
